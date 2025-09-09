@@ -1,4 +1,4 @@
-# Pattern Triggered Timer
+# Sequence Detector with Timer
 module top_module (
     input clk,
     input reset,      // Synchronous reset
@@ -8,13 +8,13 @@ module top_module (
     output done,
     input ack );
     
-  reg[3:0]ps,ns;
-  reg[9:0]clk_1000;
-  localparam[3:0]A=0,B=1,C=2,D=3,E=4,s1=5,s2=6,s3=7,timer=8,user_ack=9;
+  reg [3:0] ps,ns;
+  reg [9:0] clk_1000;
+  localparam [3:0] A=0, B=1, C=2, D=3, E=4, s1=5, s2=6, s3=7, timer=8, user_ack=9;
     
 //1101 sequence detection
 
-  always@(*)begin
+  always @ (*) begin
         case(ps)
             A : ns = data ? B : A;
             B : ns = data ? C : A;
@@ -22,9 +22,7 @@ module top_module (
             D : ns = data ? E : A;
             E : ns = s1;
             
-/* E & s0 are same state (transition from seq det.
-        to loading)
-shifting data into the 4-bit register count.[LOADING STATE]{delay for timer}*/
+//shifting data into the 4-bit register count [Generating delay for the timer]
 
             s1 : ns = s2;
             s2 : ns = s3;
